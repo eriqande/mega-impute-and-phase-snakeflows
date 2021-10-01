@@ -1,0 +1,36 @@
+---
+title: "phase-chromosomes-snakeflow"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is just a little workflow I put together for phasing genotypes in a vcf.gz file
+using `eagle` (and eventually I will add BEAGLE 4 in here for low coverage data, using genotype
+likelihoods).
+
+The basic idea is that you give it:
+
+1. The path to a big vcf.gz file with all the genotypes,
+2. a white-space delimited file where the first column holds the
+chromosome names and the second holds the integer equivalent, for the chromosomes
+that you want to phase.  For example if we wanted to do the first
+7 chromsomes of _O. mykiss_ that file would look like:
+```
+omy01 1
+omy02 2
+omy03 3
+omy04 4
+omy05 5
+omy06 6
+omy07 7
+```
+
+The steps here are to:
+
+1. index the VCF with bcftools, if it is not already indexed.
+2. Make a new version of it with numbers instead of chromosome names. Place
+this is `resources` and index it.
+3. Launch a separate job for each chromosome, each by default using 20 threads.

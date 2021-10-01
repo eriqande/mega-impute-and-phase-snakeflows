@@ -1,0 +1,22 @@
+
+
+include: "rules/common.smk"
+
+
+
+
+rule rename_chrs:
+	input: 
+		vcf = config["vcf_input"],
+		chroms = config["chrom_file"]
+	output:
+		bcf = "resources/rcVCF/data.bcf",
+		csi = "resources/rcVCF/data.bcf.csi"
+	conda:
+		"../envs/bcftools.yaml"
+	log:
+		anno = "results/log/rename_chrs/bcftools-annotate.log",
+		index = "results/log/rename_chrs/bcftools-index.log"
+	shell:
+		"bcftools annotate --rename-chrs {input.chroms} -Oz {input.vcf} > {output.bcf}; "
+		"bcftools index {output.bcf}"
