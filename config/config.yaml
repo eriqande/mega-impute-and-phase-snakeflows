@@ -6,8 +6,8 @@ eagle_path: bin/eagle-Linux
 chrom_file: config/mykiss_chroms.tsv
 
 
-#vcf_input: "/home/eanderson/BIG_FILES/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff.vcf.gz"
-vcf_input: "tiny_data/small.vcf.gz"
+vcf_input: "/home/eanderson/BIG_FILES/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff.vcf.gz"
+#vcf_input: "tiny_data/small.vcf.gz"
 
 map_input: "config/genetic_map_1cMperMb.txt"
 
