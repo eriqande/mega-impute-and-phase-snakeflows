@@ -40,7 +40,7 @@ rule phase_chromosomes:
 	shell:
 		"{params.eagle} --vcf {input.bcf} --vcfOutFormat b "
 		"--geneticMapFile {params.mapfile} "
-		"--outPrefix results/phased_bcf/chr-{chrom} "
+		"--outPrefix results/phased_bcf/chr-{wildcards.chrom} "
 
 
 rule index_phased_chrom_bcfs:
