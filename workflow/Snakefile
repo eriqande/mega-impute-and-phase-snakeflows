@@ -37,10 +37,12 @@ rule phase_chromosomes:
 	params:
 		eagle = config["eagle_path"],
 		mapfile = config["map_input"]
+	log:
+		"results/log/phase_chromosomes/eagle-{chrom}.log"
 	shell:
 		"{params.eagle} --vcf {input.bcf} --vcfOutFormat b "
 		"--geneticMapFile {params.mapfile} "
-		"--outPrefix results/phased_bcf/chr-{wildcards.chrom} "
+		"--outPrefix results/phased_bcf/chr-{wildcards.chrom} > {log} 2>&1 "
 
 
 rule index_phased_chrom_bcfs:
