@@ -1,6 +1,8 @@
 ---
 title: "phase-chromosomes-snakeflow"
-output: github_document
+output: 
+  github_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -8,16 +10,18 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 This is just a little workflow I put together for phasing genotypes in a vcf.gz file
-using `eagle` (and eventually I will add BEAGLE 4 in here for low coverage data, using genotype
-likelihoods).
+using `eagle` (and eventually I will add BEAGLE 4 in here for low coverage data, using 
+genotype likelihoods).
 
 The basic idea is that you give it:
 
-1. The path to a big vcf.gz file with all the genotypes,
+1. The path to a big vcf.gz of bcf file (it must have an index, .tbi or .csi)
+with all the genotypes,
 2. a white-space delimited file where the first column holds the
-chromosome names and the second holds the integer equivalent, for the chromosomes
+chromosome names (corresponding to what you have in the VCF file)
+and the second holds the integer equivalent, for the chromosomes
 that you want to phase.  For example if we wanted to do the first
-7 chromsomes of _O. mykiss_ that file would look like:
+7 chromosomes of _O. mykiss_ that file would look like:
 ```
 omy01 1
 omy02 2
@@ -30,7 +34,63 @@ omy07 7
 
 The steps here are to:
 
-1. index the VCF with bcftools, if it is not already indexed.
-2. Make a new version of it with numbers instead of chromosome names. Place
-this is `resources` and index it.
-3. Launch a separate job for each chromosome, each by default using 20 threads.
+1. Break the VCF file up into a bunch of smaller BCF files, one per chromosome that you
+want to phase, and the chromosomes in each to use simple integers. Then index each of
+those.  These go into the `resources/rcBCF` directory.
+2. Launch a separate job to phase each chromosome, by default using 20 threads.
+3. In the end, the phased BCF file for each chromosome gets indexed by bcftools.
+
+
+## Configuration
+
+Currently, you can set what you need in the `config/config.yaml` file.  That looks
+like this:
+```yaml
+`r paste(readLines("config/config.yaml"), collapse = "\n")`
+```
+
+## Output files
+
+The phased BCF files and their indexes are produced with names/paths like:
+```
+results/phased_bcf/chr-1.bcf
+results/phased_bcf/chr-1.bcf.csi
+results/phased_bcf/chr-2.bcf
+results/phased_bcf/chr-2.bcf.csi
+results/phased_bcf/chr-3.bcf
+results/phased_bcf/chr-3.bcf.csi
+...
+```
+
+Like a standard snakemake workflow, the log files appear in 
+`results/log/rule-name` where `rule-name` is the name of the
+rule that created the log files.
+
+## Command line invocation
+
+**For a dry-run**
+```sh
+snakemake -np
+```
+
+**For running it on a node with 20 cores**
+```sh
+snakemake --cores 20 --use-conda -p
+```
+Note that the phasing is done, by default with 20 threads per job/chromosome.
+If you need to change that, edit the Snakefile.
+
+**For running it across multiple SLURM nodes each with 20 cores and 94Gb of RAM**
+```
+snakemake --jobs 100  -p --use-conda --profile sedna_slurm_profile/
+```
+
+## Rule Graph
+
+Here is the rulegraph for this simple workflow, made with the command:
+```sh
+snakemake --rulegraph | dot -Tsvg > figs/rulegraph.svg
+```
+```{r, echo = FALSE, fig.align='center', out.width="25%"}
+knitr::include_graphics("figs/rulegraph.svg")
+```

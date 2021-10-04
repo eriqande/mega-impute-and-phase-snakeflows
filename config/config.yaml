@@ -1,13 +1,22 @@
-
-
-
+# path to the Eagle executable
 eagle_path: bin/eagle-Linux
 
+# path to the two columns TSV file (with no column names). The first
+# column is the chromosome name as it appears in the input VCF/BCF
+# file and the second is the integer equivalent
 chrom_file: config/mykiss_chroms.tsv
 
 
+
+# path to the VCF file of all the genotypes you want phased.
+# This must be indexed (i.e. with bcftools).
 vcf_input: "/home/eanderson/Documents/Big-Data-Sets/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff/Omyk.115_ind.omyV6Chr.bi.allelic.snpEff.vcf.gz"
+
+# This is a path with a tiny data set for playing around.
 #vcf_input: "tiny_data/small.vcf.gz"
 
+# A map file that specifies 1 centiMorgan per megabase on all chromosomes.
+# This is used if a good recombination map is not available for your
+# species.
 map_input: "config/genetic_map_1cMperMb.txt"
 
