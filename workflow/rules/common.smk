@@ -14,7 +14,7 @@ df = pd.read_csv(config["chrom_file"], header=None, sep = "\t")
 
 chrom_list = df.iloc[:, 1].tolist()
 
-chrom_table = df.set_axis(['orig_chrom', 'integer_chrom'], axis=1, inplace=False).set_index("integer_chrom", drop = False)
+chrom_table = df.set_axis(['orig_chrom', 'integer_chrom'], axis=1).set_index("integer_chrom", drop = False)
 
 
 def orig_chrom_from_integer_chrom(wildcards):

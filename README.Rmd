@@ -1,5 +1,5 @@
 ---
-title: "phase-chromosomes-snakeflow"
+title: "mega-impute-and-phase-snakeflows"
 output: 
   github_document:
     toc: true
@@ -9,13 +9,13 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This is just a little workflow I put together for phasing genotypes in a vcf.gz file
+This is just a little workflow I put together for phasing genotypes in an indexed VCF file
 using `eagle` (and eventually I will add BEAGLE 4 in here for low coverage data, using 
 genotype likelihoods).
 
 The basic idea is that you give it:
 
-1. The path to a big vcf.gz of bcf file (it must have an index, .tbi or .csi)
+1. The path to a vcf.gz or bcf file (it must have an index, .tbi or .csi)
 with all the genotypes,
 2. a white-space delimited file where the first column holds the
 chromosome names (corresponding to what you have in the VCF file)
@@ -31,8 +31,9 @@ omy05 5
 omy06 6
 omy07 7
 ```
+I think this is necessary for `eagle` because it needs integer chromosome names.
 
-The steps here are to:
+The steps that the workflow does in `eagle` mode are:
 
 1. Break the VCF file up into a bunch of smaller BCF files, one per chromosome that you
 want to phase, and the chromosomes in each to use simple integers. Then index each of
@@ -43,10 +44,11 @@ those.  These go into the `resources/rcBCF` directory.
 
 ## Configuration
 
-Currently, you can set what you need in the `config/config.yaml` file.  That looks
+Currently, you can set what you need to set up if you are going to be using this
+with `eagle` in the `.test/config-test-eagle/config.yaml` file.  That looks
 like this:
 ```yaml
-`r paste(readLines("config/config.yaml"), collapse = "\n")`
+`r paste(readLines(".test/config-test-eagle/config.yaml"), collapse = "\n")`
 ```
 
 ## Output files
@@ -84,6 +86,8 @@ If you need to change that, edit the Snakefile.
 ```
 snakemake --jobs 100  -p --use-conda --profile sedna_slurm_profile/
 ```
+
+That took about an hour on a day when SEDNA was not overutilized.
 
 ## Rule Graph
 
