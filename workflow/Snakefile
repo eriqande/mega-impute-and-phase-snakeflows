@@ -5,7 +5,7 @@ include: "rules/common.smk"
 
 
 rule all:
-	input: expand("results/phased_bcf/chr-{chrom}.bcf.csi", chrom = chrom_list)
+	input: expand("results/{method}/phased_bcf/chr-{chrom}.bcf.csi", method = config["method"], chrom = chrom_list)
 
 
 rule split_vcf_and_rename_chrs:
@@ -15,13 +15,13 @@ rule split_vcf_and_rename_chrs:
 	params:
 		orig_chrom = orig_chrom_from_integer_chrom
 	output:
-		bcf = "resources/rcBCF/chr-{chrom}.bcf",
-		csi = "resources/rcBCF/chr-{chrom}.bcf.csi"
+		bcf = "results/{method}/rcBCF/chr-{chrom}.bcf",
+		csi = "results/{method}/rcBCF/chr-{chrom}.bcf.csi"
 	conda:
 		"envs/bcftools.yaml"
 	log:
-		anno = "results/log/rename_chrs/bcftools-view-annotate-{chrom}.log",
-		index = "results/log/rename_chrs/bcftools-index-{chrom}.log"
+		anno = "results/log/{method}/split_vcf_and_rename_chrs/bcftools-view-annotate-{chrom}.log",
+		index = "results/log/{method}/split_vcf_and_rename_chrs/bcftools-index-{chrom}.log"
 	shell:
 		"bcftools view -Ou {input.vcf} {params.orig_chrom} | "
 		"bcftools annotate --rename-chrs {input.chroms} -Ob > {output.bcf} 2> {log.anno}; "
@@ -30,10 +30,10 @@ rule split_vcf_and_rename_chrs:
 
 rule phase_chromosomes:
 	input:
-		bcf = "resources/rcBCF/chr-{chrom}.bcf",
-		csi =  "resources/rcBCF/chr-{chrom}.bcf.csi"
+		bcf = "results/{method}/rcBCF/chr-{chrom}.bcf",
+		csi =  "results/{method}/rcBCF/chr-{chrom}.bcf.csi"
 	output:
-		bcf = "results/phased_bcf/chr-{chrom}.bcf"
+		bcf = "results/{method}/phased_bcf/chr-{chrom}.bcf"
 	params:
 		eagle = config["eagle_path"],
 		mapfile = config["map_input"]
@@ -41,20 +41,20 @@ rule phase_chromosomes:
 	resources:
 		mem_mb = 92000
 	log:
-		"results/log/phase_chromosomes/eagle-{chrom}.log"
+		"results/log/{method}/phase_chromosomes/eagle-{chrom}.log"
 	shell:
 		"{params.eagle} --vcf {input.bcf} --vcfOutFormat b "
 		"--geneticMapFile {params.mapfile} "
 		"--numThreads {threads} "
 		"--chromX 35 "
-		"--outPrefix results/phased_bcf/chr-{wildcards.chrom} > {log} 2>&1 "
+		"--outPrefix results/{wildcards.method}/phased_bcf/chr-{wildcards.chrom} > {log} 2>&1 "
 
 
 rule index_phased_chrom_bcfs:
 	input:
-		"results/phased_bcf/chr-{chrom}.bcf"
+		"results/{method}/phased_bcf/chr-{chrom}.bcf"
 	output:
-		"results/phased_bcf/chr-{chrom}.bcf.csi"
+		"results/{method}/phased_bcf/chr-{chrom}.bcf.csi"
 	conda:
 		"envs/bcftools.yaml"
 	shell:

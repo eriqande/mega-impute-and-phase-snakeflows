@@ -1,3 +1,5 @@
+method: eagle
+
 # path to the Eagle executable. (Only runs on Linux)
 eagle_path: bin/eagle-Linux
 

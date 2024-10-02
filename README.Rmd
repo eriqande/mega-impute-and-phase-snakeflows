@@ -70,10 +70,19 @@ rule that created the log files.
 
 ## Command line invocation
 
-**For a dry-run**
+**To dry-run the eagle test case **
+
 ```sh
-snakemake -np
+ snakemake -np --configfile .test/config-test-eagle/config.yaml
 ```
+
+**To run the eagle test case on a node with 20 cores**
+```sh
+ snakemake -p --cores 20 --set-threads phase_chromosomes=2 --use-conda  --configfile .test/config-test-eagle/config.yaml
+```
+Note that the `--set-threads phase_chromosomes=2` is there because each of the jobs
+is quite small.
+
 
 **For running it on a node with 20 cores**
 ```sh
