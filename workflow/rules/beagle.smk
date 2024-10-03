@@ -9,7 +9,8 @@ rule beagle_impute:
         vcf = config["vcf_input"],
     params:
         region = "{beagle_region}",
-        out = "results/{method}/impute/sections/{beagle_region}"
+        out = "results/{method}/impute/sections/{beagle_region}",
+        mem = config["beagle_impute_mem"]
     output:
         vcfgz = "results/{method}/impute/sections/{beagle_region}.vcf.gz",
     log:
@@ -18,7 +19,7 @@ rule beagle_impute:
     conda:
         "../envs/beagle41.yaml"
     shell:
-        "  beagle gl={input.vcf}  out={params.out} "
+        "  beagle {params.mem} gl={input.vcf}  out={params.out} "
         "  nthreads={threads} chrom={params.region} > {log} 2> {log} "    
 
 
@@ -29,7 +30,8 @@ rule beagle_phase:
         "results/{method}/impute/sections/{beagle_region}.vcf.gz",
     params:
         region = "{beagle_region}",
-        out = "results/{method}/phase/sections/{beagle_region}"
+        out = "results/{method}/phase/sections/{beagle_region}",
+        mem = config["beagle_phase_mem"]
     output:
         vcfgz = "results/{method}/phase/sections/{beagle_region}.vcf.gz",
     log:
@@ -38,7 +40,7 @@ rule beagle_phase:
     conda:
         "../envs/beagle41.yaml"
     shell:
-        "  beagle gt={input}  out={params.out} "
+        "  beagle {params.mem} gt={input}  out={params.out} "
         "  nthreads={threads} > {log} 2> {log} "    
 
 

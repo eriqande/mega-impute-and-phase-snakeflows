@@ -15,3 +15,8 @@ vcf_input: ".test/data/small.vcf.gz"
 # These should be in genomic order since things will be catenated at the end.
 beagle_regions: .test/config-test-beagle/beagle_regions.txt
 
+
+# these are required and should be adjusted to correspond to
+# the architecture and number of threads being used.
+beagle_impute_mem: "–Xmx42g"
+beagle_phase_mem: "–Xmx42g"
