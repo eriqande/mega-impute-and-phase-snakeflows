@@ -1,4 +1,4 @@
-""# rules for imputing and phasing from genotype likelihoods
+# rules for imputing and phasing from genotype likelihoods
 # using beagle 4.1.
 
 
