@@ -1,0 +1,17 @@
+method: beagle
+
+# path to the VCF file of all the genotypes you want phased.
+# This must be indexed (i.e. with bcftools).  Note that it is
+# up to the user to do any filtering of sites of individuals desired
+# outside of this workflow.  You should probably filter it down to
+# biallelic sites, and maybe do a MAF filter if you want.  For BEAGLE,
+# I think this thing needs to be a VCF.gz  
+vcf_input: ".test/data/small.vcf.gz"
+
+
+# path to a file with a single unnamed column of regions specified the
+# way you can with beagle:  chrom:start-end, chrom, chrom:-end, 
+# or chrom:start-
+# These should be in genomic order since things will be catenated at the end.
+beagle_regions: .test/config-test-beagle/beagle_regions.txt
+

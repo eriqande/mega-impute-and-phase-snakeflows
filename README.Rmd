@@ -33,6 +33,7 @@ omy07 7
 ```
 I think this is necessary for `eagle` because it needs integer chromosome names.
 
+
 The steps that the workflow does in `eagle` mode are:
 
 1. Break the VCF file up into a bunch of smaller BCF files, one per chromosome that you
@@ -81,7 +82,13 @@ rule that created the log files.
  snakemake -p --cores 20 --set-threads phase_chromosomes=2 --use-conda  --configfile .test/config-test-eagle/config.yaml
 ```
 Note that the `--set-threads phase_chromosomes=2` is there because each of the jobs
-is quite small.
+is quite small.  
+
+Also note that the `.test/config-test-eagle/mykiss_chroms.tsv` file omits chromosomes
+2 and 13 because, in this small version of the dataset, those chromosomes cause
+eagle to throw errors.
+
+
 
 
 **For running it on a node with 20 cores**

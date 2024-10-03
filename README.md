@@ -51,26 +51,25 @@ using this with `eagle` in the `.test/config-test-eagle/config.yaml`
 file. That looks like this:
 
 ``` yaml
+method: eagle
+
+# path to the VCF file of all the genotypes you want phased.
+# This must be indexed (i.e. with bcftools).
+vcf_input: ".test/data/small.vcf.gz"
+
 # path to the Eagle executable. (Only runs on Linux)
 eagle_path: bin/eagle-Linux
 
 # path to the two columns TSV file (with no column names). The first
 # column is the chromosome name as it appears in the input VCF/BCF
 # file and the second is the integer equivalent
-chrom_file: .test/config-test-eagle/mykiss_chroms.tsv
+eagle_chrom_file: .test/config-test-eagle/mykiss_chroms.tsv
 
-
-
-# path to the VCF file of all the genotypes you want phased.
-# This must be indexed (i.e. with bcftools).
-vcf_input: ".test/data/small.vcf.gz"
-# This is a path with a tiny data set for playing around.
-#vcf_input: "tiny_data/small.vcf.gz"
 
 # A map file that specifies 1 centiMorgan per megabase on all chromosomes.
 # This is used if a good recombination map is not available for your
 # species. Used by eagle
-map_input: "config/genetic_map_1cMperMb.txt"
+eagle_map_input: "inputs/genetic_map_1cMperMb.txt"
 ```
 
 ## Output files
@@ -92,11 +91,24 @@ created the log files.
 
 ## Command line invocation
 
-**For a dry-run**
+**To dry-run the eagle test case **
 
 ``` sh
-snakemake -np
+ snakemake -np --configfile .test/config-test-eagle/config.yaml
 ```
+
+**To run the eagle test case on a node with 20 cores**
+
+``` sh
+ snakemake -p --cores 20 --set-threads phase_chromosomes=2 --use-conda  --configfile .test/config-test-eagle/config.yaml
+```
+
+Note that the `--set-threads phase_chromosomes=2` is there because each
+of the jobs is quite small.
+
+Also note that the `.test/config-test-eagle/mykiss_chroms.tsv` file
+omits chromosomes 2 and 13 because, in this small version of the
+dataset, those chromosomes cause eagle to throw errors.
 
 **For running it on a node with 20 cores**
 

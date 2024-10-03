@@ -3,4 +3,4 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - bcftools == 1.19
+  - bioconda/label/cf201901::beagle
