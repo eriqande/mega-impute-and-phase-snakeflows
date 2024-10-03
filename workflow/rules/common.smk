@@ -3,8 +3,8 @@ import pandas as pd
 
 # these two lines are for testing.  Comment out before distribution
 #from snakemake import load_configfile
-from snakemake.common.configfile import _load_configfile
-config = _load_configfile(".test/config-test-beagle/config.yaml")
+#from snakemake.common.configfile import _load_configfile
+#config = _load_configfile(".test/config-test-beagle/config.yaml")
 
 
 
