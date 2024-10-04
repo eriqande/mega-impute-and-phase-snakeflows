@@ -5,3 +5,6 @@
 results
 .snakemake
 resources
+/config
+/data
+

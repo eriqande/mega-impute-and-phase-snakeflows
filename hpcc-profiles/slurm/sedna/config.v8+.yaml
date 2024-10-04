@@ -14,7 +14,7 @@ cluster-generic-status-cmd: status-sacct-robust.sh
 cluster-generic-cancel-cmd: scancel
 cluster-generic-cancel-nargs: 400
 default-resources:
-  - time="24:00:00"
+  - time="48:00:00"
 restart-times: 0
 max-jobs-per-second: 10
 max-status-checks-per-second: 25
@@ -31,5 +31,5 @@ rerun-trigger: mtime
 
 
 set-threads:
-  beagle_impute: 10
-  beagle_phase: 10
+  beagle_impute: 5
+  beagle_phase: 5
