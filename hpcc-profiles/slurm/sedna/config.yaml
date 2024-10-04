@@ -12,7 +12,7 @@ cluster-status: status-sacct-robust.sh
 cluster-cancel: scancel
 cluster-cancel-nargs: 400
 default-resources:
-  - time="08:00:00"
+  - time="48:00:00"
 restart-times: 0
 max-jobs-per-second: 10
 max-status-checks-per-second: 25
@@ -28,5 +28,5 @@ rerun-trigger: mtime
 
 
 set-threads:
-  beagle_impute: 10
-  beagle_phase: 10
+  beagle_impute: 5
+  beagle_phase: 5

@@ -5,18 +5,22 @@ method: beagle
 # up to the user to do any filtering of sites of individuals desired
 # outside of this workflow.  You should probably filter it down to
 # biallelic sites, and maybe do a MAF filter if you want.  For BEAGLE,
-# I think this thing needs to be a VCF.gz  
+# I think this thing needs to be a VCF.gz
 vcf_input: ".test/data/small.vcf.gz"
 
 
 # path to a file with a single unnamed column of regions specified the
-# way you can with beagle:  chrom:start-end, chrom, chrom:-end, 
+# way you can with beagle:  chrom:start-end, chrom, chrom:-end,
 # or chrom:start-
 # These should be in genomic order since things will be catenated at the end.
 beagle_regions: .test/config-test-beagle/beagle_regions.txt
 
 
 # these are required and should be adjusted to correspond to
-# the architecture and number of threads being used.
-beagle_impute_mem: "–Xmx42g"
-beagle_phase_mem: "–Xmx42g"
+# the architecture and number of threads being used.  For example,
+# on SEDNA, since each core is about 4.8 Gb, you could reasonably give
+# 4 Gb for each core to the Java virtual machine heap.  So, if you
+# are doing 5 threads for these jobs, then you would use 5 * 4 = 20 for
+# the Java heap.  Thus setting it to -Xmx20g.
+beagle_impute_mem: "–Xmx1g"
+beagle_phase_mem: "–Xmx1g"

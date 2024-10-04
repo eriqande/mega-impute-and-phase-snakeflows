@@ -14,7 +14,7 @@ eagle_chrom_file: .test/config-test-eagle/mykiss_chroms.tsv
 
 
 # A map file that specifies 1 centiMorgan per megabase on all chromosomes.
-# This is used if a good recombination map is not available for your
-# species. Used by eagle
+# This is used by eagle if a good recombination map is not available for your
+# species.
 eagle_map_input: "inputs/genetic_map_1cMperMb.txt"
 
